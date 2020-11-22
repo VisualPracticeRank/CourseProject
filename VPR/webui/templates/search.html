@@ -2,7 +2,7 @@
   <label>Data: </label>
     <select>
       <option>Cranfield</option>
-      <option>Add new...</option>
+      <option>Test</option>
     </select>
 
     <label>Model: </label>
@@ -11,11 +11,11 @@
       <option>Add new...</option>
     </select>
 </div>
-
+{{ results }}
 <center>
   <h1>VPR</h1>
-  <form method="get">
-    <input type="text" placeholder="Query">
+  <form method="get" action="/search">
+    <input id="query" name="query" type="text" placeholder="Query">
     <input type="submit" value="Search">
   </form>
 </center>
