@@ -1,15 +1,20 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView
-from django.http import HttpResponse
 import search_eval
+import subprocess
 
-def test(request):
-    search_eval.run_query("test2")
-    return HttpResponse("1")
+#class SearchView(TemplateView):
+#    template_name = 'search.html'
+#
+#    def get_context_data(self, **kwargs):
+#        context = super().get_context_data(**kwargs)
+#        context['query'] = self.request.GET.get("query")
+#        #search_eval.run_query(context['query'])
+#        return context
 
 class SearchView(TemplateView):
     template_name = 'search.html'
     def get_context_data(self, *args, **kwargs):
         context = super(SearchView, self).get_context_data(*args, **kwargs)
-        test = search_eval.run_query("test1")
+        context['results'] = eval(subprocess.run(["python3", "search_eval.py", self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
         return context

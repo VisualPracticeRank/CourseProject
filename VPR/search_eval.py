@@ -19,16 +19,14 @@ def run_query(q):
 
     query_cfg = cfg_d['query-runner']
     if query_cfg is None:
-        print("query-runner table needed in {}".format(cfg))
         sys.exit(1)
 
-    top_k = 1
+    top_k = 10
 
     query = metapy.index.Document()
-    print(q.strip())
-
     query.content(q.strip())
-    print(os.getcwd())
     r = ranker.score(idx, query, top_k)
     print(r)
     return r
+
+run_query(sys.argv[1])
