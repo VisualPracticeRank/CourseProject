@@ -5,7 +5,31 @@ import metapy
 import pytoml
 import os
 
+class CustomRanker(metapy.index.RankingFunction):
+    def __init__(self, rtn):
+        self.rtn = rtn
+        super(CustomRanker, self).__init__()
+
+    def score_one(self, sd):
+        # Security - Good for testing, but should become more secure.
+        return eval(self.rtn
+            .replace("{{avg_dl}}", str(sd.avg_dl))
+            .replace("{{num_docs}}", str(sd.num_docs))
+            .replace("{{total_terms}}", str(sd.total_terms))
+            .replace("{{query_length}}", str(sd.query_length))
+            .replace("{{t_id}}", str(sd.t_id))
+            .replace("{{query_term_weight}}", str(sd.query_term_weight))
+            .replace("{{doc_count}}", str(sd.doc_count))
+            .replace("{{corpus_term_count}}", str(sd.corpus_term_count))
+            .replace("{{d_id}}", str(sd.d_id))
+            .replace("{{doc_term_count}}", str(sd.doc_term_count))
+            .replace("{{doc_size}}", str(sd.doc_size))
+            .replace("{{doc_unique_terms}}", str(sd.doc_unique_terms))
+            )
+
+
 def load_ranker(cfg_file):
+    #return CustomRanker("{{doc_size}} + 1")
     return metapy.index.OkapiBM25()
 
 def return_score_data(idx, query):
@@ -27,7 +51,6 @@ def create_inverted_index(file):
     #Generate tmp config file
 
     #Make Inverted Index
-
 
     #Compress Inverted index
 
