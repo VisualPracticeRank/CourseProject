@@ -1,9 +1,9 @@
 prefix = "."
 stop-words = "stopwords.txt"
 
-dataset = "cranfield"
-corpus = "line.toml"
-index = "idx"
+dataset = "dataset"
+corpus = "../../../line.toml"
+index = "datasets/900effc5-cd22-4019-a72e-49d44da24a25/idx"
 
 query-judgements = "cranfield-qrels.txt"
 

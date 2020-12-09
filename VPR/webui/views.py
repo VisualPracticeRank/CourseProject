@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, UpdateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.list import ListView
+from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UploadFileForm
 from .models import Model
@@ -47,11 +48,13 @@ class SearchView(TemplateView):
 
 def upload_file(request):
     if request.method == 'POST':
-        print('test')
         form = UploadFileForm(request.POST, request.FILES)
-        print(request.FILES['file'].temporary_file_path())
+        #print(request.FILES['file'].temporary_file_path())
         if form.is_valid():
-            print(request.FILES['file'])
+            form.save()
+            #print(request.FILES['file'])
+            #file = request.FILES['file']
+            #file_name = default_storage.save("data/{}".format(file.name), file)
             return HttpResponseRedirect('/')
     else:
         form = UploadFileForm()
