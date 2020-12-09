@@ -49,12 +49,8 @@ class SearchView(TemplateView):
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        #print(request.FILES['file'].temporary_file_path())
         if form.is_valid():
             form.save()
-            #print(request.FILES['file'])
-            #file = request.FILES['file']
-            #file_name = default_storage.save("data/{}".format(file.name), file)
             return HttpResponseRedirect('/')
     else:
         form = UploadFileForm()
