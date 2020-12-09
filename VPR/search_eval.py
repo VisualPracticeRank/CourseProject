@@ -12,6 +12,7 @@ class CustomRanker(metapy.index.RankingFunction):
 
     def score_one(self, sd):
         # Security - Good for testing, but should become more secure.
+        print(str(sd.avg_dl), str(sd.num_docs), str(sd.total_terms), str(sd.query_length), str(sd.t_id), str(sd.query_term_weight), str(sd.doc_count), str(sd.corpus_term_count), str(sd.d_id), str(sd.doc_term_count), str(sd.doc_size), str(sd.doc_unique_terms))
         return eval(self.rtn
             .replace("{{avg_dl}}", str(sd.avg_dl))
             .replace("{{num_docs}}", str(sd.num_docs))
@@ -26,7 +27,6 @@ class CustomRanker(metapy.index.RankingFunction):
             .replace("{{doc_size}}", str(sd.doc_size))
             .replace("{{doc_unique_terms}}", str(sd.doc_unique_terms))
             )
-
 
 def load_ranker(cfg_file):
     #return CustomRanker("{{doc_size}} + 1")
@@ -61,6 +61,7 @@ def load_inverted_index(index_as_string):
     return 1
 
 def run_query(q):
+    os.chdir("./datasets/900effc5-cd22-4019-a72e-49d44da24a25/")
     cfg = "config.toml"
     idx = metapy.index.make_inverted_index(cfg)
     ranker = load_ranker(cfg)
@@ -82,3 +83,4 @@ def run_query(q):
     return r
 
 run_query(sys.argv[1])
+#run_query("aircraft man")
