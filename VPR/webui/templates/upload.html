@@ -6,4 +6,22 @@
     {{ form|crispy }}
     <input type="submit" value="upload">
 </form>
+<table id="tablePreview" class="table table-striped table-sm">
+    <tr>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Edit</td>
+        <td>Delete</td>
+    </tr>
+    {% for obj in object_list %}
+            <tr>
+            <td>{{obj.name}}</td>
+            <td>{{obj.description}}</td>
+            <td>
+                <a href="{% url 'DatasetUpdate' obj.id %}">Edit</a>
+            </td>
+            <td><a href="{% url 'DatasetDelete' obj.id %}">Delete</a></td>
+            </tr>
+    {% endfor %}
+</table>
 {% endblock content %}

@@ -5,9 +5,25 @@ from django.views.generic.list import ListView
 from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UploadFileForm
-from .models import Model
+from .models import Model, Dataset
 from django.urls import reverse
 import subprocess
+import uuid
+
+class DatasetDelete(DeleteView):
+    model = Dataset
+    template_name = 'delete.html'
+
+    def get_success_url(self):
+        return reverse('dataset')
+
+class DatasetUpdate(UpdateView):
+    model = Dataset
+    fields = ['name', 'description']
+    template_name = 'update.html'
+
+    def get_success_url(self):
+        return reverse('dataset')
 
 class ModelDelete(DeleteView):
     model = Model
@@ -54,4 +70,4 @@ def upload_file(request):
             return HttpResponseRedirect('/')
     else:
         form = UploadFileForm()
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': form,'object_list': Dataset.objects.all()})
