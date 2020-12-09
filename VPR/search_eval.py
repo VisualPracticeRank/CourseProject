@@ -61,8 +61,8 @@ def load_inverted_index(index_as_string):
     return 1
 
 def run_query(q):
-    os.chdir("./datasets/900effc5-cd22-4019-a72e-49d44da24a25/")
-    cfg = "config.toml"
+    os.chdir("./datasets/3ac96c8a-32fc-429f-baa5-badaecb0b3e0/")
+    cfg = "../../config.toml"
     idx = metapy.index.make_inverted_index(cfg)
     ranker = load_ranker(cfg)
     ev = metapy.index.IREval(cfg)

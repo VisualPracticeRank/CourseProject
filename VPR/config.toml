@@ -1,11 +1,11 @@
 prefix = "."
-stop-words = "stopwords.txt"
+stop-words = "../../stopwords.txt"
 
 dataset = "dataset"
 corpus = "../../../line.toml"
-index = "datasets/900effc5-cd22-4019-a72e-49d44da24a25/idx"
+index = "idx"
 
-query-judgements = "cranfield-qrels.txt"
+query-judgements = "../../cranfield-qrels.txt"
 
 [[analyzers]]
 method = "ngram-word"
