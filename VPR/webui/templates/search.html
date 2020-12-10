@@ -1,5 +1,8 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
 <div class="topnav">
-  <label>Data: </label>
+  <label><a href="dataset">Dataset: </a></label>
     <select>
       <option>Cranfield</option>
       <option>Test</option>
@@ -11,7 +14,6 @@
       <option>Add new...</option>
     </select>
 </div>
-{{ results }}
 <center>
   <h1>VPR</h1>
   <form method="get" action="/search">
@@ -19,3 +21,28 @@
     <input type="submit" value="Search">
   </form>
 </center>
+
+<br>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Score</th>
+      <th scope="col">Body</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for obj in results %}
+    <tr>
+      <th scope="row">{{obj.rank}}</th>
+      <td>{{obj.score}}</td>
+      <td>{{obj.body}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock content %}
