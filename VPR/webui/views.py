@@ -5,10 +5,12 @@ from django.views.generic.list import ListView
 from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UploadFileForm
-from .models import Model, Dataset
+from .models import Model, Dataset, Document
 from django.urls import reverse
 import subprocess
 import uuid
+import os
+from django.conf import settings
 
 class DatasetDelete(DeleteView):
     model = Dataset
@@ -59,14 +61,26 @@ class SearchView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(SearchView, self).get_context_data(*args, **kwargs)
         if "query" in self.request.GET:
-            context['results'] = eval(subprocess.run(["python3", "search_eval.py", self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+            results = eval(subprocess.run(["python3", "search_eval.py", self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+            list = []
+            counter = 1
+            for x in results:
+                list.append({'body': Document.objects.get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
+                counter += 1
+            context['results'] = list
         return context
 
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            test = form.save()
+            file_id = Dataset.objects.get(id=test.id)
+            mfile = open(os.path.join(settings.MEDIA_ROOT, "datasets/{}/dataset/dataset.dat".format(file_id.id)), 'r')
+            counter = 0
+            for line in mfile.readlines():
+                Document.objects.create(body=line,document_id=counter,dataset=file_id)
+                counter += 1
             return HttpResponseRedirect('/')
     else:
         form = UploadFileForm()

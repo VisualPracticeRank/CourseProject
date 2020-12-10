@@ -14,6 +14,14 @@ class Dataset(models.Model):
     def __str__(self):
         return self.name
 
+class Document(models.Model):
+    document_id = models.IntegerField()
+    body = models.TextField()
+    dataset = models.ForeignKey(
+        'Dataset',
+        on_delete=models.CASCADE,
+    )
+
 class Model(models.Model):
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=128)
