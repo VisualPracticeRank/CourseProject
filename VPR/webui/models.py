@@ -7,7 +7,7 @@ def dataset_id_path(instance, filename):
 
 class Dataset(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32,  unique=True)
     description = models.CharField(max_length=128)
     data = models.FileField(upload_to=dataset_id_path)
 
@@ -23,7 +23,7 @@ class Document(models.Model):
     )
 
 class Model(models.Model):
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, unique=True)
     description = models.CharField(max_length=128)
     model = models.TextField()
 
