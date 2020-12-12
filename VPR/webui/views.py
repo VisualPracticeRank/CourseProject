@@ -69,7 +69,6 @@ class SearchView(TemplateView):
         models = []
         for model in Model.objects.all():
             models.append({'id': model.id, 'name': model.name})
-        #context['models'] = [{'id': 0, 'name': 'test'}, {'id': 1, 'name': 'test2'}]
         context['models'] = models
 
         if "query" in self.request.GET:
