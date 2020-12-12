@@ -7,26 +7,27 @@ import faulthandler; faulthandler.enable()
 
 def make_folder(name):
     try:
-        os.makedirs(folder_name)
-        os.makedirs(folder_name+"/data")
+        os.makedirs(name)
+        os.makedirs(name+"/dataset")
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
     
-def setup_folder(data, folder_name):
-    shutil.copy("template/stopwords.txt", folder_name)
-    shutil.copy(data, folder_name + "/data/data.dat")
+def setup_folder(data, folder):
+    shutil.copy("template/stopwords.txt", folder)
+    shutil.copy(data, folder + "/dataset/dataset.dat")
 
-    f = open(folder_name + "/data/line.toml", "w")
+    f = open(folder + "/dataset/line.toml", "w")
     f.write("type = \"line-corpus\"")
     f.close()
 
-    f = open(folder_name + "/config.toml", "w")
-    f.write("prefix = \"./" + folder_name + "\"")
+    f = open(folder + "/config.toml", "w")
+    #f.write("prefix = \"./" + folder + "\"")
+    f.write("prefix = \".\"")
     f.write("\nstop-words = \"stopwords.txt\"")
-    f.write("\n\ndataset = \"data\"")
+    f.write("\n\ndataset = \"dataset\"")
     f.write("\ncorpus = \"line.toml\"")
-    f.write("\nindex = \"idx-" + folder_name + "\"")
+    f.write("\nindex = \"idx-" + folder + "\"")
     
     f.write("\n\n[[analyzers]]")
     f.write("\nmethod = \"ngram-word\"")
@@ -35,21 +36,22 @@ def setup_folder(data, folder_name):
 
     f.close()
 
-def setup_idx(folder_name):
-    metapy.index.make_inverted_index(folder_name + "/config.toml")
-    shutil.copytree("idx-" + folder_name, folder_name + "/idx-" + folder_name)
-    shutil.rmtree("idx-" + folder_name, ignore_errors = False)
+def setup_idx(folder_path, folder_name):
+    cur_dir = os.getcwd()
+    os.chdir(folder_path)
+    metapy.index.make_inverted_index("config.toml")
+    os.chdir(cur_dir)
+    #ishutil.copytree("./idx-" + folder_name, folder_path + "/idx-" + folder_name)
+    #shutil.rmtree("./idx-" + folder_name, ignore_errors = False)
 
-def return_name(name):
-    print(name)
-    return name
+def run_setup(data):
+    folder_name = uuid.uuid4().hex # generate unique folder name
+    folder_path = './datasets/' + folder_name
+    make_folder(folder_path)
 
-
-folder_name = uuid.uuid4().hex # generate unique folder name
-make_folder(folder_name)
-
-data = sys.argv[1]
-setup_folder(data, folder_name)
-setup_idx(folder_name)
-
-return_name(folder_name)
+    #data = sys.argv[1]
+    setup_folder(data, folder_path)
+    setup_idx(folder_path, folder_name)
+    
+    #print(folder_path)
+    return folder_path
