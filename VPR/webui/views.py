@@ -74,7 +74,7 @@ class SearchView(TemplateView):
         if "query" in self.request.GET:
             print(self.request.GET)
             obj = Dataset.objects.get(name=self.request.GET.get("dataset")) # find dataset path
-#            print(dataset_path.data)
+            #print(obj.data)
             folder = obj.data.name.split("/")[1]
             results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
             print(results)
