@@ -62,6 +62,7 @@ class SearchView(TemplateView):
         context = super(SearchView, self).get_context_data(*args, **kwargs)
         if "query" in self.request.GET:
             results = eval(subprocess.run(["python3", "search_eval.py", self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+            print(results)
             list = []
             counter = 1
             for x in results:

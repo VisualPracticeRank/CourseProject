@@ -5,6 +5,8 @@ import metapy
 import pytoml
 import os
 
+import initial_setup
+
 class CustomRanker(metapy.index.RankingFunction):
     def __init__(self, rtn):
         self.rtn = rtn
@@ -61,18 +63,23 @@ def load_inverted_index(index_as_string):
     return 1
 
 def run_query(q):
-    os.chdir("./datasets/3ac96c8a-32fc-429f-baa5-badaecb0b3e0/")
-    cfg = "../../config.toml"
+    #print("\n\n\n\n\n\n\n\n")
+
+    # create unique folder
+    folder = initial_setup.run_setup("cranfield/cranfield.dat") #specify dataset
+
+    os.chdir(folder)
+    cfg = "config.toml"
     idx = metapy.index.make_inverted_index(cfg)
     ranker = load_ranker(cfg)
-    ev = metapy.index.IREval(cfg)
+    #ev = metapy.index.IREval(cfg)
 
-    with open(cfg, 'r') as fin:
-        cfg_d = pytoml.load(fin)
+    #with open(cfg, 'r') as fin:
+    #    cfg_d = pytoml.load(fin)
 
-    query_cfg = cfg_d['query-runner']
-    if query_cfg is None:
-        sys.exit(1)
+    #query_cfg = cfg_d['query-runner']
+    #if query_cfg is None:
+    #    sys.exit(1)
 
     top_k = 10
 
@@ -82,5 +89,6 @@ def run_query(q):
     print(r)
     return r
 
+#print(sys.argv[1])
 run_query(sys.argv[1])
 #run_query("aircraft man")
