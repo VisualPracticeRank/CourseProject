@@ -6,6 +6,7 @@ import pytoml
 import os
 
 import initial_setup
+import build_ranker
 
 class CustomRanker(metapy.index.RankingFunction):
     def __init__(self, rtn):
@@ -62,7 +63,24 @@ def create_inverted_index(file):
 def load_inverted_index(index_as_string):
     return 1
 
-def run_query(q):
+def ranker_func(model):
+    if model == 'BM25':
+        #print("BM25")
+        return metapy.index.OkapiBM25()
+    elif model == "PivotedLength":
+        #print("PivotedLength")
+        return metapy.index.PivotedLength()
+    elif model == "AbsoluteDiscount":
+        #print("AbsoluteDiscount")
+        return metapy.index.AbsoluteDiscount()
+    elif model == "JelinekMercer":
+        #print("JelinekMercer")
+        return metapy.index.JelinekMercer()
+    elif model == "DirichletPrior":
+        #print("DirichletPrior")
+        return metapy.index.DirichletPrior()
+
+def run_query(data, model, q):
     #print("\n\n\n\n\n\n\n\n")
 
     # create unique folder
@@ -71,7 +89,11 @@ def run_query(q):
     os.chdir(folder)
     cfg = "config.toml"
     idx = metapy.index.make_inverted_index(cfg)
-    ranker = load_ranker(cfg)
+    ranker = ranker_func(model)
+    #if model == 'BM25':
+    #ranker = metapy.index.OkapiBM25()
+    #ranker = metapy.index.OkapiBM25()
+    #ranker = load_ranker(cfg)
     #ev = metapy.index.IREval(cfg)
 
     #with open(cfg, 'r') as fin:
@@ -90,5 +112,5 @@ def run_query(q):
     return r
 
 #print(sys.argv[1])
-run_query(sys.argv[1])
+run_query(sys.argv[1], sys.argv[2], sys.argv[3])
 #run_query("aircraft man")
