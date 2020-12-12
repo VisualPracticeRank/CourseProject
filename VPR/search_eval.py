@@ -80,14 +80,16 @@ def ranker_func(model):
         #print("DirichletPrior")
         return metapy.index.DirichletPrior()
 
-def run_query(data, model, q):
+def run_query(folder, model, q):
     #print("\n\n\n\n\n\n\n\n")
 
     # create unique folder
-    folder = initial_setup.run_setup("cranfield/cranfield.dat") #specify dataset
-
-    os.chdir(folder)
-    cfg = "config.toml"
+    #folder = initial_setup.run_setup("cranfield/cranfield.dat") #specify dataset
+    
+    #folder = "./datasets/3839c813-af33-4d3b-928b-f9ba7f14aa00"
+    filepath = "./datasets/" + folder
+    os.chdir(filepath)
+    cfg = "../../config.toml"
     idx = metapy.index.make_inverted_index(cfg)
     ranker = ranker_func(model)
     #if model == 'BM25':
