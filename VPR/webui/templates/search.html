@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="topnav">
-  <label><a href="dataset">Dataset: </a></label>
-    <select>
-      <option>Cranfield</option>
-      <option>Test</option>
-    </select>
 
-    <label><a href="model">Model: </a></label>
-    <select>
-      <option>BM25+</option>
-      <option>Add new...</option>
-    </select>
-</div>
 <center>
-  <h1>VPR</h1>
+
   <form method="get" action="/search">
-    <input id="query" name="query" type="text" placeholder="Query">
-    <input type="submit" value="Search">
-  </form>
-</center>
+ <div class="form-group row">
+  <label for="dataset"><a href="dataset">Dataset: </a></label>
+    <select id="dataset" name="dataset" class="form-control">
+      {% for obj in datasets %}<option>{{obj.name}}</option>{% endfor %}
+    </select>
+  </div>
+   <div class="form-group row">
+  <label for="model"><a href="model">Model: </a></label>
+    <select id="model" name="model" class="form-control">
+      {% for obj in models %}<option>{{obj.name}}</option>{% endfor %}
+    </select>
+    </div>
+    <br>
+    <br>
+    <input class="form-control" id="query" name="query" type="text" placeholder="Query">
+    <br>
+    <input class="btn btn-primary" type="submit" value="Search">
+
+      </form>
+
+
 
 <br>
 
+{% if results %}
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -42,7 +48,7 @@
     {% endfor %}
   </tbody>
 </table>
-
+{% endif %}
 
 
 {% endblock content %}
