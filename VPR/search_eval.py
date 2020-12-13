@@ -30,19 +30,19 @@ class CustomRanker(metapy.index.RankingFunction):
             .replace("{{doc_unique_terms}}", str(sd.doc_unique_terms))
             )
 
-def load_ranker(cfg_file):
-    return metapy.index.OkapiBM25()
+#def load_ranker(cfg_file):
+#    return metapy.index.OkapiBM25()
 
 def return_score_data(idx, query):
     avg_dl = idx.avg_doc_length()
     num_docs = idx.num_docs()
     total_terms = idx.total_corpus_terms()
-    #query_length = len(query)
+    query_length = len(query)
     #t_id = idx.unique_terms()
 
     #query_term_weight = 0
     #doc_count = idx.doc_freq(t_id)
-    corpus_term_count = idx.total_num_occurences(t_id)
+    #corpus_term_count = idx.total_num_occurences(t_id)
     # Document
     #d_id = 0
     #doc_term_count = 0
@@ -62,10 +62,10 @@ def return_score_data(idx, query):
         corpus_term_count.append((idx.term_text(i), idx.total_num_occurences(i)))
     
     l_l = []
-    l_l.append(avg_d)
+    l_l.append(avg_dl)
     l_l.append(num_docs)
     l_l.append(total_terms)
-    l_l.append(corpus_term_count)
+    l_l.append(query_length)
     l_l.append(corpus_unique_term)
     l_l.append(term_doc_count)
     l_l.append(corpus_term_count)
@@ -93,16 +93,6 @@ def run_query(folder, model, q):
     idx = metapy.index.make_inverted_index(cfg)
     ranker = ranker_func(model)
     
-    #ranker = load_ranker(cfg)
-    #ev = metapy.index.IREval(cfg)
-
-    #with open(cfg, 'r') as fin:
-    #    cfg_d = pytoml.load(fin)
-
-    #query_cfg = cfg_d['query-runner']
-    #if query_cfg is None:
-    #    sys.exit(1)
-
     top_k = 10
     query = metapy.index.Document()
 
@@ -129,16 +119,23 @@ def run_query(folder, model, q):
             for query_num, line in enumerate(query_file):
                 query.content(line.strip())
                 results = ranker.score(idx, query, top_k)
+                #if num_queries < 1:
                 r_l.append(results)
+                    #l = [r_l]
+                    #print(l)
+                    #return l
+                #    print([r_l])
+                #    return [r_l]
                 curr_ndcg = ev.ndcg(results, query_start + query_num, top_k)
                 ndcg += curr_ndcg
                 n_l.append(curr_ndcg)
                 num_queries += 1
         ndcg = ndcg / num_queries
-        print(ndcg)
-        
+#        print(ndcg)
+       
         l = []
         l.append(r_l)
+        l.append(return_score_data(idx, q.strip()))
         l.append(n_l)
         l.append(ndcg)
         print(l)
@@ -146,8 +143,10 @@ def run_query(folder, model, q):
     else:
         query.content(q.strip())
         r = ranker.score(idx, query, top_k)
-        print(r)
-        return r
+
+        l = [[r]]
+        print(l)
+        return l
 
 
 run_query(sys.argv[1], sys.argv[2], sys.argv[3])

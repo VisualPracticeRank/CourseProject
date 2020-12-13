@@ -85,16 +85,29 @@ class SearchView(TemplateView):
                 set_model = base64.b64encode(Model.objects.get(name=set_model).model.encode())
             print(set_model)
             folder = obj.data.name.split("/")[1]
-#            results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), "-1"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
             results = eval(subprocess.run(["python3", "search_eval.py", folder, set_model, self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
-            print(results)
+            #print(results)
+            
             list = []
             counter = 1
-            for x in results:
+            
+            # results[0] = top k articles and scores
+            # results[1] = ndcg score for each query
+            # results[3]: 
+            #              results[3][0] - avg_dl
+            #              results[3][1] - num_docs
+            #              results[3][2] - total_terms
+            #              results[3][3] - query_length
+            #              results[3][4] - corpus_term_count
+            #              results[3][5] - corpus_unique_term
+            #              results[3][6] - term_doc_count (tuple list)
+            #              results[3][0] - corpus_term_count (tuple list)
+            # results[3] = average ndcg score
+            for x in results[0][0]:
                 list.append({'body': Document.objects.filter(dataset_id=obj.id).get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
                 counter += 1
+            
             context['results'] = list
-            #context['results'] = results
         return context
 
 def upload_file(request):
