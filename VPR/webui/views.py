@@ -74,14 +74,14 @@ class SearchView(TemplateView):
         if "query" in self.request.GET:
             print(self.request.GET)
             obj = Dataset.objects.get(name=self.request.GET.get("dataset")) # find dataset path
-            #print(obj.data)
+            print(obj.id)
             folder = obj.data.name.split("/")[1]
             results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
             print(results)
             list = []
             counter = 1
             for x in results:
-                list.append({'body': Document.objects.get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
+                list.append({'body': Document.objects.filter(dataset_id=obj.id).get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
                 counter += 1
             context['results'] = list
         return context
