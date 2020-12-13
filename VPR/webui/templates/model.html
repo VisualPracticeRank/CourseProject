@@ -1,7 +1,38 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <form method="post">{% csrf_token %}{{ form|crispy}}<input type="submit" value="Add"></form>
+<div class="card">
+<div class="card-body">
+{% verbatim %}
+The follow variables and math functions can be used inside your model (defined in model textbox below.)
+<br>
+{{avg_dl}}
+<br>
+{{num_docs}}
+<br>
+{{total_terms}}
+<br>
+{{query_length}}
+<br>
+{{t_id}}
+<br>
+{{query_term_weight}}
+<br>
+{{doc_count}}
+<br>
+{{corpus_term_count}}
+<br>
+{{d_id}}
+<br>
+{{doc_term_count}}
+<br>
+{{doc_size}}
+<br>
+{{doc_unique_terms}}
+{% endverbatim %}
+</div>
+</div>
+    <form method="post">{% csrf_token %}{{ form|crispy}}<input type="submit" value="Add"></form> test
     <table id="tablePreview" class="table table-striped table-sm">
         <tr>
             <td>Name</td>
