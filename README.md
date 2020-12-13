@@ -37,7 +37,7 @@ If you want to shutdown the Django server, you can do `ctrl+c` in the terminal t
 
 ## Features
 ### Dataset
-You can upload your dataset by selecting `Dataset` in the homepage and fill up and upload the appropriate files needed:
+You can upload your dataset by selecting `Dataset` in the homepage and fill in and upload the appropriate files needed:
 1. Name
 2. Description
 3. Data
@@ -47,7 +47,14 @@ You can upload your dataset by selecting `Dataset` in the homepage and fill up a
 and select Upload
 
 ### Model
-In addition to the default models available ('OkapiBM25','PivotedLength','AbsoluteDiscount','JelinekMercer','DirichletPrior'), you can upload your own custom models.
+In addition to the default models available ('OkapiBM25', 'PivotedLength', 'AbsoluteDiscount', 'JelinekMercer', 'DirichletPrior'), you can upload your own custom models.
+
+You can upload your own model (ranker) by selecting `Model` in the homepage and fill in the textboxes:
+1. Name
+2. Description
+3. Model
+
+and select Add
 
 # CourseProject
 
