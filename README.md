@@ -1,5 +1,6 @@
 # Visual Practice Rank
 ## Goal
+The goal of this project is to create a visual representation of a supplied ranking function in a form that is comparable to mdoern search engines withe the display of additional data that would be only in the background
 
 ## Installation
 1. Create a virtual environment using conda:
