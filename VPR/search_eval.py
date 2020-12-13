@@ -4,7 +4,7 @@ import time
 import metapy
 import pytoml
 import os
-
+import base64
 import initial_setup
 #import build_ranker
 
@@ -15,7 +15,6 @@ class CustomRanker(metapy.index.RankingFunction):
 
     def score_one(self, sd):
         # Security - Good for testing, but should become more secure.
-        print(str(sd.avg_dl), str(sd.num_docs), str(sd.total_terms), str(sd.query_length), str(sd.t_id), str(sd.query_term_weight), str(sd.doc_count), str(sd.corpus_term_count), str(sd.d_id), str(sd.doc_term_count), str(sd.doc_size), str(sd.doc_unique_terms))
         return eval(self.rtn
             .replace("{{avg_dl}}", str(sd.avg_dl))
             .replace("{{num_docs}}", str(sd.num_docs))
@@ -32,7 +31,6 @@ class CustomRanker(metapy.index.RankingFunction):
             )
 
 def load_ranker(cfg_file):
-    #return CustomRanker("{{doc_size}} + 1")
     return metapy.index.OkapiBM25()
 
 def return_score_data(idx, query):
@@ -74,21 +72,8 @@ def return_score_data(idx, query):
     
     return l_l
 
-def create_inverted_index(file):
-    #Generate tmp config file
-
-    #Make Inverted Index
-
-    #Compress Inverted index
-
-    #Pass Path to Compressed Index
-    return 1
-
-def load_inverted_index(index_as_string):
-    return 1
-
 def ranker_func(model):
-    if model == 'BM25':
+    if model == 'OkapiBM25':
         #print("BM25")
         return metapy.index.OkapiBM25()
     elif model == "PivotedLength":
@@ -103,10 +88,10 @@ def ranker_func(model):
     elif model == "DirichletPrior":
         #print("DirichletPrior")
         return metapy.index.DirichletPrior()
+    else:
+        return CustomRanker(base64.b64decode(model).decode())
 
 def run_query(folder, model, q):
-    # create unique folder
-    #folder = initial_setup.run_setup("cranfield/cranfield.dat") #specify dataset
     filepath = "./datasets/" + folder
     os.chdir(filepath)
     cfg = "../../config.toml"
@@ -124,7 +109,6 @@ def run_query(folder, model, q):
     #    sys.exit(1)
 
     top_k = 10
-
     query = metapy.index.Document()
 
     if q == "-1":
@@ -162,6 +146,5 @@ def run_query(folder, model, q):
         print(r)
         return r
 
-#print(sys.argv[1])
+
 run_query(sys.argv[1], sys.argv[2], sys.argv[3])
-#run_query("aircraft man")

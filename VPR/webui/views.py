@@ -11,6 +11,7 @@ import subprocess
 import uuid
 import os
 from django.conf import settings
+import base64
 
 class DatasetDelete(DeleteView):
     model = Dataset
@@ -66,18 +67,26 @@ class SearchView(TemplateView):
         context['datasets'] = datasets
 
         # build context for models
-        models = []
+        models = ['OkapiBM25','PivotedLength','AbsoluteDiscount','JelinekMercer','DirichletPrior']
+        default_models = models.copy()
         for model in Model.objects.all():
-            models.append({'id': model.id, 'name': model.name})
+            models.append(model.name)
         context['models'] = models
+
+        context['default_model'] = self.request.GET.get("model")
+        context['default_dataset'] = self.request.GET.get("dataset")
 
         if "query" in self.request.GET:
             print(self.request.GET)
             obj = Dataset.objects.get(name=self.request.GET.get("dataset")) # find dataset path
             print(obj.id)
+            set_model = self.request.GET.get("model")
+            if set_model not in default_models:
+                set_model = base64.b64encode(Model.objects.get(name=set_model).model.encode())
+            print(set_model)
             folder = obj.data.name.split("/")[1]
 #            results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), "-1"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
-            results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+            results = eval(subprocess.run(["python3", "search_eval.py", folder, set_model, self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
             print(results)
             list = []
             counter = 1
