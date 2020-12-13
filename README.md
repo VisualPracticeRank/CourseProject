@@ -8,11 +8,13 @@
 
 e.g. `create -n vpr python=3.6 anaconda`
 
+
 2. Activate the virtual environment
 
 `conda activate [your-env-name]`
 
 e.g. `conda activate vpr`
+
 
 3. Install the packages in requirements.txt
 
