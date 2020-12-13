@@ -87,4 +87,4 @@ Then, it will determine if the `model` is one of the defaults ('OkapiBM25', 'Piv
 Finally, it will run the ranker with the inverted index, query for the top 10 documents and return the top 10 documents, and their score.
 
 ## Citation
-1. Chase Geiglem, 2017. [2-search-and-ir-eval.ipynb] (https://github.com/meta-toolkit/metapy/blob/master/tutorials/2-search-and-ir-eval.ipynb "2-search-and-ir-eval.ipynb").
+1. Chase Geiglem, 2017. [2-search-and-ir-eval.ipynb] (https://github.com/meta-toolkit/metapy/blob/master/tutorials/2-search-and-ir-eval.ipynb).
