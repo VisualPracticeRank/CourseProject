@@ -6,7 +6,7 @@ import pytoml
 import os
 
 import initial_setup
-import build_ranker
+#import build_ranker
 
 class CustomRanker(metapy.index.RankingFunction):
     def __init__(self, rtn):
@@ -36,19 +36,43 @@ def load_ranker(cfg_file):
     return metapy.index.OkapiBM25()
 
 def return_score_data(idx, query):
-    avg_dl = idx.avg_dog_length()
+    avg_dl = idx.avg_doc_length()
     num_docs = idx.num_docs()
     total_terms = idx.total_corpus_terms()
-    query_length = len(query)
-    t_id = 0
-    query_term_weight = 0
-    doc_count = idx.doc_freq(t_id)
+    #query_length = len(query)
+    #t_id = idx.unique_terms()
+
+    #query_term_weight = 0
+    #doc_count = idx.doc_freq(t_id)
     corpus_term_count = idx.total_num_occurences(t_id)
     # Document
-    d_id = 0
-    doc_term_count = 0
-    doc_size = 0
-    doc_unique_terms = 0
+    #d_id = 0
+    #doc_term_count = 0
+    #doc_size = 0
+    #doc_unique_terms = 0
+
+    corpus_unique_term = idx.unique_terms()
+    #term_count = []
+    #for i in range(corpus_unique_terms):
+    #    term_count.append((idx.term_text(i), idx.term_text(i)))
+    term_doc_count = []
+    for i in range(corpus_unique_term):
+        term_doc_count.append((idx.term_text(i), idx.doc_freq(i)))
+    
+    corpus_term_count = []
+    for i in range(corpus_unique_term):
+        corpus_term_count.append((idx.term_text(i), idx.total_num_occurences(i)))
+    
+    l_l = []
+    l_l.append(avg_d)
+    l_l.append(num_docs)
+    l_l.append(total_terms)
+    l_l.append(corpus_term_count)
+    l_l.append(corpus_unique_term)
+    l_l.append(term_doc_count)
+    l_l.append(corpus_term_count)
+    
+    return l_l
 
 def create_inverted_index(file):
     #Generate tmp config file
@@ -81,22 +105,16 @@ def ranker_func(model):
         return metapy.index.DirichletPrior()
 
 def run_query(folder, model, q):
-    #print("\n\n\n\n\n\n\n\n")
-
     # create unique folder
     #folder = initial_setup.run_setup("cranfield/cranfield.dat") #specify dataset
-    
-    #folder = "./datasets/3839c813-af33-4d3b-928b-f9ba7f14aa00"
     filepath = "./datasets/" + folder
     os.chdir(filepath)
     cfg = "../../config.toml"
     idx = metapy.index.make_inverted_index(cfg)
     ranker = ranker_func(model)
-    #if model == 'BM25':
-    #ranker = metapy.index.OkapiBM25()
-    #ranker = metapy.index.OkapiBM25()
+    
     #ranker = load_ranker(cfg)
-    #ev = metapy.index.IREval(cfg)
+    ev = metapy.index.IREval(cfg)
 
     #with open(cfg, 'r') as fin:
     #    cfg_d = pytoml.load(fin)
@@ -108,10 +126,41 @@ def run_query(folder, model, q):
     top_k = 10
 
     query = metapy.index.Document()
-    query.content(q.strip())
-    r = ranker.score(idx, query, top_k)
-    print(r)
-    return r
+
+    if q == "-1":
+        #print("\n\nhere\n\n\n")
+        with open(cfg, 'r') as fin:
+            cfg_d = pytoml.load(fin)
+
+        query_cfg = cfg_d['query-runner']
+        if query_cfg is None:
+            sys.exit(1)
+
+
+        query_path = query_cfg.get('query-path', 'queries.txt')
+        query_start = query_cfg.get('query-id-start', 0)
+
+        ndcg = 0.0
+        num_queries = 0
+
+        #print('Running queries')
+        l = []
+        with open(query_path) as query_file:
+            for query_num, line in enumerate(query_file):
+                query.content(line.strip())
+                results = ranker.score(idx, query, top_k)
+                l.append(results)
+                ndcg += ev.ndcg(results, query_start + query_num, top_k)
+                num_queries+=1
+        ndcg = ndcg / num_queries
+        print(ndcg)
+        l.append(ndcg)
+        return l
+    else:
+        query.content(q.strip())
+        r = ranker.score(idx, query, top_k)
+        print(r)
+        return r
 
 #print(sys.argv[1])
 run_query(sys.argv[1], sys.argv[2], sys.argv[3])

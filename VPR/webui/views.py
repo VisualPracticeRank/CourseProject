@@ -76,6 +76,7 @@ class SearchView(TemplateView):
             obj = Dataset.objects.get(name=self.request.GET.get("dataset")) # find dataset path
             print(obj.id)
             folder = obj.data.name.split("/")[1]
+#            results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), "-1"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
             results = eval(subprocess.run(["python3", "search_eval.py", folder, self.request.GET.get("model"), self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
             print(results)
             list = []
@@ -84,6 +85,7 @@ class SearchView(TemplateView):
                 list.append({'body': Document.objects.filter(dataset_id=obj.id).get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
                 counter += 1
             context['results'] = list
+            #context['results'] = results
         return context
 
 def upload_file(request):
