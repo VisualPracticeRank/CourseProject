@@ -76,3 +76,7 @@ The datasets details are stored in the webui_dataset. The dataset, qrels and que
 When a dataset is being uploaded, the documents in the dataset is loaded into `webui_document` with the following fields: id (primary key), document_id, body, dataset_id (foreign key to webui_dataset.id).
 
 When a model is being uploaded, the model is loaded into `webui_model` with the following fields: id (primary key), description, model, name. Before storing the actual model, it will be encoded to base64.
+
+After you can selected a dataset, model and a query, you click on Search. Then frontend (in `view.py`) will call the backend (`search_eval.py`) and pass the following variables: `dataset`, `model`, `query`.
+
+### Backend
