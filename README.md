@@ -6,7 +6,7 @@
 
 `conda create -n [your-env-name] python=3.6 anaconda`
 
-e.g. `create -n vpr python=3.6 anaconda`
+e.g. `conda create -n vpr python=3.6 anaconda`
 
 
 2. Activate the virtual environment
