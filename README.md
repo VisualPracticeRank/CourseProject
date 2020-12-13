@@ -44,7 +44,7 @@ You can upload your dataset by selecting `Dataset` in the homepage and fill in a
 4. Qrels
 5. Queries
 
-and select Upload
+and select Upload.
 
 ### Model
 In addition to the default models available ('OkapiBM25', 'PivotedLength', 'AbsoluteDiscount', 'JelinekMercer', 'DirichletPrior'), you can upload your own custom models.
@@ -54,7 +54,15 @@ You can upload your own model (ranker) by selecting `Model` in the homepage and 
 2. Description
 3. Model
 
-and select Add
+and select Add.
+
+### Query
+After selecting the dataset and model that you want to use, you can specify a query in the textbox and select Search. You will get the top 10 documents with the highest score in your model, displayed in descending oder.
+
+### Step Through
+This functionality allows you to step through the queries.txt file you specified when uploading the dataset and observe the changes in the ndcg score and other various stats.
+
+After selecting the dataset and model that you want to use, you can select Step Through. You can use the '<<' and '>>' buttons to step through and step out.
 
 # CourseProject
 
