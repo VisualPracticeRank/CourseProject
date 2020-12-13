@@ -5,7 +5,7 @@ dataset = "dataset"
 corpus = "../../../line.toml"
 index = "idx"
 
-query-judgements = "qrels.txt"
+query-judgements = "./dataset/qrels.txt"
 
 [[analyzers]]
 method = "ngram-word"
@@ -13,5 +13,5 @@ ngram = 1
 filter = "default-unigram-chain"
 
 [query-runner]
-query-path = "queries.txt"
+query-path = "./dataset/queries.txt"
 query-id-start = 1

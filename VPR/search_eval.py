@@ -74,19 +74,14 @@ def return_score_data(idx, query):
 
 def ranker_func(model):
     if model == 'OkapiBM25':
-        #print("BM25")
         return metapy.index.OkapiBM25()
     elif model == "PivotedLength":
-        #print("PivotedLength")
         return metapy.index.PivotedLength()
     elif model == "AbsoluteDiscount":
-        #print("AbsoluteDiscount")
         return metapy.index.AbsoluteDiscount()
     elif model == "JelinekMercer":
-        #print("JelinekMercer")
         return metapy.index.JelinekMercer()
     elif model == "DirichletPrior":
-        #print("DirichletPrior")
         return metapy.index.DirichletPrior()
     else:
         return CustomRanker(base64.b64decode(model).decode())
@@ -99,7 +94,7 @@ def run_query(folder, model, q):
     ranker = ranker_func(model)
     
     #ranker = load_ranker(cfg)
-    ev = metapy.index.IREval(cfg)
+    #ev = metapy.index.IREval(cfg)
 
     #with open(cfg, 'r') as fin:
     #    cfg_d = pytoml.load(fin)
@@ -112,6 +107,7 @@ def run_query(folder, model, q):
     query = metapy.index.Document()
 
     if q == "-1":
+        ev = metapy.index.IREval(cfg)
         #print("\n\nhere\n\n\n")
         with open(cfg, 'r') as fin:
             cfg_d = pytoml.load(fin)
@@ -120,7 +116,6 @@ def run_query(folder, model, q):
         if query_cfg is None:
             sys.exit(1)
 
-
         query_path = query_cfg.get('query-path', 'queries.txt')
         query_start = query_cfg.get('query-id-start', 0)
 
@@ -128,17 +123,25 @@ def run_query(folder, model, q):
         num_queries = 0
 
         #print('Running queries')
-        l = []
+        r_l = []
+        n_l = []
         with open(query_path) as query_file:
             for query_num, line in enumerate(query_file):
                 query.content(line.strip())
                 results = ranker.score(idx, query, top_k)
-                l.append(results)
-                ndcg += ev.ndcg(results, query_start + query_num, top_k)
-                num_queries+=1
+                r_l.append(results)
+                curr_ndcg = ev.ndcg(results, query_start + query_num, top_k)
+                ndcg += curr_ndcg
+                n_l.append(curr_ndcg)
+                num_queries += 1
         ndcg = ndcg / num_queries
         print(ndcg)
+        
+        l = []
+        l.append(r_l)
+        l.append(n_l)
         l.append(ndcg)
+        print(l)
         return l
     else:
         query.content(q.strip())
