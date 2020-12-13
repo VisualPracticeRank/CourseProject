@@ -1,6 +1,6 @@
 # Visual Practice Rank
 ## Goal
-The goal of this project is to create a visual representation of a supplied ranking function in a form that is comparable to mdoern search engines withe the display of additional data that would be only in the background
+The goal of this project is to create a visual representation of a supplied ranking function in a form that is comparable to modern search engines with the display of additional data that would be only in the background
 
 ## Getting Started
 ### Installation
@@ -37,7 +37,7 @@ If you want to shutdown the Django server, you can do `ctrl+c` in the terminal t
 
 ## Features
 ### Dataset
-You can upload your dataset by selecting `Dataset` in the homepage and fill in and upload the appropriate files needed:
+You can upload your dataset by selecting `Dataset` on the homepage and fill in and upload the appropriate files needed:
 1. Name
 2. Description
 3. Data
@@ -49,7 +49,7 @@ and select Upload.
 ### Model
 In addition to the default models available ('OkapiBM25', 'PivotedLength', 'AbsoluteDiscount', 'JelinekMercer', 'DirichletPrior'), you can upload your own custom models.
 
-You can upload your own model (ranker) by selecting `Model` in the homepage and fill in the textboxes:
+You can upload your own model (ranker) by selecting `Model` on the homepage and fill in the textboxes:
 1. Name
 2. Description
 3. Model
@@ -57,7 +57,7 @@ You can upload your own model (ranker) by selecting `Model` in the homepage and 
 and select Add.
 
 ### Query
-After selecting the dataset and model that you want to use, you can specify a query in the textbox and select Search. You will get the top 10 documents with the highest score in your model, displayed in descending oder.
+After selecting the dataset and model that you want to use, you can specify a query in the textbox and select Search. You will get the top 10 documents with the highest score in your model, displayed in descending order.
 
 ### Step Through
 This functionality allows you to step through the queries.txt file you specified when uploading the dataset and observe the changes in the ndcg score and other various stats.
