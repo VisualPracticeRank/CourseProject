@@ -63,7 +63,3 @@ After selecting the dataset and model that you want to use, you can specify a qu
 This functionality allows you to step through the queries.txt file you specified when uploading the dataset and observe the changes in the ndcg score and other various stats.
 
 After selecting the dataset and model that you want to use, you can select Step Through. You can use the '<<' and '>>' buttons to step through and step out.
-
-# CourseProject
-
-Please fork this repository and paste the github link of your fork on Microsoft CMT. Detailed instructions are on Coursera under Week 1: Course Project Overview/Week 9 Activities.
