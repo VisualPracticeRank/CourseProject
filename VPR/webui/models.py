@@ -5,11 +5,19 @@ import os
 def dataset_id_path(instance, filename):
     return 'datasets/{0}/dataset/dataset.dat'.format(instance.id)
 
+def qrels_id_path(instance, filename):
+    return 'datasets/{0}/dataset/qrels.txt'.format(instance.id)
+
+def queries_id_path(instance, filename):
+    return 'datasets/{0}/dataset/queries.txt'.format(instance.id)
+
 class Dataset(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=32,  unique=True)
     description = models.CharField(max_length=128)
     data = models.FileField(upload_to=dataset_id_path)
+    qrels = models.FileField(upload_to=qrels_id_path)
+    queries = models.FileField(upload_to=queries_id_path)
 
     def __str__(self):
         return self.name

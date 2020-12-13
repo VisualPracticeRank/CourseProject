@@ -4,6 +4,6 @@ from .models import Dataset
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = Dataset
-        fields = ('name','description','data')
+        fields = ('name','description','data','qrels','queries')
     #title = forms.CharField(max_length=50)
     #file = forms.FileField()
