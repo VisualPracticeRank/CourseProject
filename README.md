@@ -2,7 +2,8 @@
 ## Goal
 The goal of this project is to create a visual representation of a supplied ranking function in a form that is comparable to mdoern search engines withe the display of additional data that would be only in the background
 
-## Installation
+## Getting Started
+### Installation
 1. Create a virtual environment using conda:
 
 `conda create -n [your-env-name] python=3.6 anaconda`
@@ -21,7 +22,7 @@ e.g. `conda activate vpr`
 
 `conda install --file requirements.txt`
 
-## Running the Django server
+### Running the Django server
 Running the Django server
 While in the CourseProject folder, cd into VPR, list of the files and folders and you will see a file called manage.py. Run the following command:
 
@@ -29,10 +30,14 @@ While in the CourseProject folder, cd into VPR, list of the files and folders an
 
 A browser with the application will pop-up.
 
-## Shutting down the Django server
+### Shutting down the Django server
 If you want to shutdown the Django server, you can do `ctrl+c` in the terminal to shut down the server. You can also deactivate the virtual environment with this command: 
 
 `conda deactivate`
+
+## Features
+
+
 
 # CourseProject
 
