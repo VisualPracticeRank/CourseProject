@@ -9,7 +9,7 @@ https://mediaspace.illinois.edu/media/t/1_3s2zdgys
 ### Installation
 1. Create a virtual environment using conda:
 
-   `conda create -n [your-env-name] python=3.6 anaconda`
+   `conda create -n [your-env-name] python=3.6`
 
    e.g. `conda create -n vpr python=3.6 anaconda`
 
@@ -29,7 +29,6 @@ https://mediaspace.illinois.edu/media/t/1_3s2zdgys
    `conda install --file requirements.txt`
 
 ### Running the Django server
-Running the Django server
 While in the CourseProject folder, cd into VPR, list of the files and folders and you will see a file called manage.py. Run the following command:
 
    `python3 manage.py makemigrations`
