@@ -35,6 +35,8 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Score</th>
+      <th scope="col">Size</th>
+      <th scope="col">Unique Terms</th>
       <th scope="col">Body</th>
     </tr>
   </thead>
@@ -43,6 +45,8 @@
     <tr>
       <th scope="row">{{obj.rank}}</th>
       <td>{{obj.score}}</td>
+      <td>{{obj.doc_size}}</td>
+      <td>{{obj.unique_terms}}</td>
       <td>{{obj.body}}</td>
     </tr>
     {% endfor %}

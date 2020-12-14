@@ -103,11 +103,23 @@ class SearchView(TemplateView):
             #              results[3][6] - term_doc_count (tuple list)
             #              results[3][0] - corpus_term_count (tuple list)
             # results[3] = average ndcg score
-            for x in results[0][0]:
-                list.append({'body': Document.objects.filter(dataset_id=obj.id).get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
+            #for x in results[0][0]:
+            #    list.append({'body': Document.objects.filter(dataset_id=obj.id).get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
+            
+            # MAIN
+            for x in results:
+                doc = Document.objects.filter(dataset_id=obj.id).get(document_id=x[0])
+                list.append({'body': doc.body[0 : 120], 'score': x[1], 'rank': counter, 'doc_size': doc.doc_size, 'unique_terms': doc.doc_unique_terms})
                 counter += 1
             
             context['results'] = list
+        return context
+
+class IterateView(TemplateView):
+    template_name = 'iterate.html'
+    def get_context_data(self, *args, **kwargs):
+        results = eval(subprocess.run(["python3", ""], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+        context = super(IterateView, self).get_context_data(*args, **kwargs)
         return context
 
 def upload_file(request):
@@ -118,9 +130,18 @@ def upload_file(request):
             file_id = Dataset.objects.get(id=test.id)
             mfile = open(os.path.join(settings.MEDIA_ROOT, "datasets/{}/dataset/dataset.dat".format(file_id.id)), 'r')
             counter = 0
+
+            results = eval(subprocess.run(["python3", "doc_data.py", str(file_id.id)], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+            doc_data = results['doc_data']
             for line in mfile.readlines():
-                Document.objects.create(body=line,document_id=counter,dataset=file_id)
+                Document.objects.create(body=line,document_id=counter,dataset=file_id,doc_size=doc_data[counter]['doc_size'],doc_unique_terms=doc_data[counter]['unique_terms'])
                 counter += 1
+
+            file_id.unique_terms = results['corpus_data']['unique_terms']
+            file_id.avg_dl = results['corpus_data']['avg_dl']
+            file_id.num_docs = results['corpus_data']['num_docs']
+            file_id.save()
+
             return HttpResponseRedirect('/')
     else:
         form = UploadFileForm()
