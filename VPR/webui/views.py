@@ -86,21 +86,58 @@ class SearchView(TemplateView):
             print(set_model)
             folder = obj.data.name.split("/")[1]
             results = eval(subprocess.run(["python3", "search_eval.py", folder, set_model, self.request.GET.get("query")], stdout=subprocess.PIPE).stdout.decode("utf-8"))
-            print(results)
+            #print(results)
+            
             list = []
             counter = 1
-            for x in results:
+            
+            # results[0] = top k articles and scores
+            # results[1] = ndcg score for each query
+            # results[3]: 
+            #              results[3][0] - avg_dl
+            #              results[3][1] - num_docs
+            #              results[3][2] - total_terms
+            #              results[3][3] - query_length
+            #              results[3][4] - corpus_term_count
+            #              results[3][5] - corpus_unique_term
+            #              results[3][6] - term_doc_count (tuple list)
+            #              results[3][0] - corpus_term_count (tuple list)
+            # results[3] = average ndcg score
+            #for x in results[0][0]:
+            #    list.append({'body': Document.objects.filter(dataset_id=obj.id).get(document_id=x[0]).body[0 : 120], 'score': x[1], 'rank': counter})
+            
+            # MAIN
+            for x in results[0][0]:
                 doc = Document.objects.filter(dataset_id=obj.id).get(document_id=x[0])
                 list.append({'body': doc.body[0 : 120], 'score': x[1], 'rank': counter, 'doc_size': doc.doc_size, 'unique_terms': doc.doc_unique_terms})
                 counter += 1
+            
             context['results'] = list
         return context
 
 class IterateView(TemplateView):
     template_name = 'iterate.html'
     def get_context_data(self, *args, **kwargs):
-        results = eval(subprocess.run(["python3", ""], stdout=subprocess.PIPE).stdout.decode("utf-8"))
         context = super(IterateView, self).get_context_data(*args, **kwargs)
+        
+        print(self.request.GET)
+        obj = Dataset.objects.get(name=self.request.GET.get("dataset")) # find dataset path
+        print(obj.id)
+        set_model = self.request.GET.get("model")
+        if set_model not in default_models:
+            set_model = base64.b64encode(Model.objects.get(name=set_model).model.encode())
+        print(set_model)
+        folder = obj.data.name.split("/")[1]
+        results = eval(subprocess.run(["python3", "search_eval.py", folder, set_model, "-1"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+        print(results)
+        
+
+
+
+        list = []
+        counter = 1
+
+
         return context
 
 def upload_file(request):
