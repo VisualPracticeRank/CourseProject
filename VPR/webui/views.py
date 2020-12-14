@@ -140,7 +140,7 @@ class IterateView(TemplateView):
             topk = []
             for y_index, y in enumerate(x):
                 doc = Document.objects.filter(dataset_id=obj.id).get(document_id=y[0])
-                topk.append({'rank': y_index,'size': doc.doc_size,'unique': doc.doc_unique_terms, 'body': doc.body[0 : 120], 'score': y[1]})
+                topk.append({'rank': y_index+1,'size': doc.doc_size,'unique': doc.doc_unique_terms, 'body': doc.body[0 : 120], 'score': y[1]})
             data.append({"topk": topk, "query": results[3][index], 'ndcg': results[1][index], 'running_ndcg': results[2][index]})
 
         context['data'] = data
