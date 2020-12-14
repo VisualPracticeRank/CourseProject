@@ -135,9 +135,15 @@ class IterateView(TemplateView):
         print(set_model)
         folder = obj.data.name.split("/")[1]
         results = eval(subprocess.run(["python3", "search_eval.py", folder, set_model, "-1"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
-        print(results)
+        data = []
+        for index, x in enumerate(results[0]):
+            topk = []
+            for y_index, y in enumerate(x):
+                doc = Document.objects.filter(dataset_id=obj.id).get(document_id=y[0])
+                topk.append({'rank': y_index,'size': doc.doc_size,'unique': doc.doc_unique_terms, 'body': doc.body[0 : 120], 'score': y[1]})
+            data.append({"topk": topk, "query": results[3][index], 'ndcg': results[1][index], 'running_ndcg': results[2][index]})
 
-
+        context['data'] = data
 
 
         list = []
