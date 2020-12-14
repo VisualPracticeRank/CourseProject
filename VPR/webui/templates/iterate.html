@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id='Data'></div><br>
+<input type="button" onclick="previous()" value="<<">
+<input type="button" onclick="next()" value=">>">
+
+<script>
+
+var test = {
+"data":[
+  {"firstName":"John", "lastName":"Doe"},
+  {"firstName":"Anna", "lastName":"Smith"},
+]
+}
+var i = 0, len;
+loop(i);
+
+
+function loop(i) {
+  len = test['data'].length
+
+  document.getElementById("Data").innerHTML =
+
+  "FirstName: " + test['data'][i]['firstName'] +
+  "<br>LastName: " + test['data'][i]['lastName'];
+}
+
+function next() {
+  if (i < len-1) {
+    i++;
+    loop(i);
+  }
+}
+
+function previous() {
+  if (i > 0) {
+    i--;
+    loop(i);
+  }
+}
+</script>
+
+</body>
+</html>

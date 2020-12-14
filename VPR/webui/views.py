@@ -96,6 +96,13 @@ class SearchView(TemplateView):
             context['results'] = list
         return context
 
+class IterateView(TemplateView):
+    template_name = 'iterate.html'
+    def get_context_data(self, *args, **kwargs):
+        results = eval(subprocess.run(["python3", ""], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+        context = super(IterateView, self).get_context_data(*args, **kwargs)
+        return context
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
