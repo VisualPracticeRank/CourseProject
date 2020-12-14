@@ -45,17 +45,22 @@ def return_score_data(idx, query):
     #corpus_term_count = idx.total_num_occurences(t_id)
     # Document
     #d_id = 0
-    #doc_term_count = 0
-    #doc_size = 0
-    #doc_unique_terms = 0
+ #   doc_term_count = idx.doc_term_count()
+ #   doc_size = idx.doc_size()
+ #   doc_unique_terms = idx.unique_terms()
 
     corpus_unique_term = idx.unique_terms()
     #term_count = []
     #for i in range(corpus_unique_terms):
     #    term_count.append((idx.term_text(i), idx.term_text(i)))
-    term_doc_count = []
+    
+    doc_size = []
+    for i in range(num_docs):
+        doc_size.append((i, idx.doc_size(i)))
+
+    doc_term_count = []
     for i in range(corpus_unique_term):
-        term_doc_count.append((idx.term_text(i), idx.doc_freq(i)))
+        doc_term_count.append((idx.term_text(i), idx.doc_freq(i)))
     
     corpus_term_count = []
     for i in range(corpus_unique_term):
@@ -66,10 +71,21 @@ def return_score_data(idx, query):
     l_l.append(num_docs)
     l_l.append(total_terms)
     l_l.append(query_length)
-    l_l.append(corpus_unique_term)
-    l_l.append(term_doc_count)
+
+    l_l.append(doc_size)
+    l_l.append(doc_term_count)
+
     l_l.append(corpus_term_count)
+    l_l.append(corpus_unique_term)
     
+#    l_l.append(doc_size)
+#    l_l.append(doc_unique_terms)
+#    l_l.append(doc_term_count)
+
+#    print(doc_size)
+#    print(doc_unique_terms)
+#    print(doc_term_count)
+
     return l_l
 
 def ranker_func(model):
@@ -119,23 +135,16 @@ def run_query(folder, model, q):
             for query_num, line in enumerate(query_file):
                 query.content(line.strip())
                 results = ranker.score(idx, query, top_k)
-                #if num_queries < 1:
                 r_l.append(results)
-                    #l = [r_l]
-                    #print(l)
-                    #return l
-                #    print([r_l])
-                #    return [r_l]
                 curr_ndcg = ev.ndcg(results, query_start + query_num, top_k)
                 ndcg += curr_ndcg
                 n_l.append(curr_ndcg)
                 num_queries += 1
         ndcg = ndcg / num_queries
-#        print(ndcg)
        
         l = []
         l.append(r_l)
-        l.append(return_score_data(idx, q.strip()))
+        #l.append(return_score_data(idx, q.strip()))
         l.append(n_l)
         l.append(ndcg)
         print(l)
