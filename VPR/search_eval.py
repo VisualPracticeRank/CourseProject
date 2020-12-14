@@ -138,7 +138,7 @@ def run_query(folder, model, q):
                 r_l.append(results)
                 curr_ndcg = ev.ndcg(results, query_start + query_num, top_k)
                 ndcg += curr_ndcg
-                n_l.append(curr_ndcg)
+                n_l.append(ndcg/num_queries)
                 num_queries += 1
         ndcg = ndcg / num_queries
        
