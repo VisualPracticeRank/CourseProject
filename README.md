@@ -22,11 +22,11 @@ https://mediaspace.illinois.edu/media/t/1_3s2zdgys
 
 3. Download the repository
    
-   `wget https://github.com/VisualPracticeRank/CourseProject.git`
+   `git clone https://github.com/VisualPracticeRank/CourseProject.git`
 
-3. Install the packages in requirements.txt
-
-   `conda install --file requirements.txt`
+3. nstall the packages in requirements.txt
+   `cd CourseProject`
+   `cpip install -r requirements.txt`
 
 ### Running the Django server
 While in the CourseProject folder, cd into VPR, list of the files and folders and you will see a file called manage.py. Run the following command:
