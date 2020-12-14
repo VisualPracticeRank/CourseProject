@@ -36,10 +36,7 @@
 <script>
 
 var test = {
-"data":[
-  {"topk": [{'body': "lol1", 'score': 0}, {'body': "lol2", 'score': 0}], "query": "test", 'ndcg': 0, 'running_ndcg': 0},
-  {"topk": [{'body': "lol2", 'score': 0}, {'body': "lol2", 'score': 0}], "query": "test", 'ndcg': 0, 'running_ndcg': 0},
-]
+"data": {{data | safe}}
 }
 var i = 0, len;
 loop(i);
