@@ -128,14 +128,18 @@ def run_query(folder, model, q):
 
         r_l = []
         n_l = []
+        rn_l = []
+        q_l = []
         with open(query_path) as query_file:
             for query_num, line in enumerate(query_file):
                 query.content(line.strip())
+                q_l.append(line.strip())
                 results = ranker.score(idx, query, top_k)
                 r_l.append(results)
                 curr_ndcg = ev.ndcg(results, query_start + query_num, top_k)
                 ndcg += curr_ndcg
-                n_l.append(ndcg/(num_queries + 1))
+                n_l.append(curr_ndcg)
+                rn_l.append(ndcg/(num_queries + 1))
                 num_queries += 1
         ndcg = ndcg / num_queries
        
@@ -143,7 +147,8 @@ def run_query(folder, model, q):
         l.append(r_l)
         #l.append(return_score_data(idx, q.strip()))
         l.append(n_l)
-        l.append(ndcg)
+        l.append(rn_l)
+        l.append(q_l)
         print(l)
         return l
     else:
