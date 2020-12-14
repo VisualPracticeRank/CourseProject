@@ -5,8 +5,6 @@ import metapy
 import pytoml
 import os
 import base64
-import initial_setup
-#import build_ranker
 
 class CustomRanker(metapy.index.RankingFunction):
     def __init__(self, rtn):
@@ -114,7 +112,7 @@ def run_query(folder, model, q):
 
     if q == "-1":
         ev = metapy.index.IREval(cfg)
-        #print("\n\nhere\n\n\n")
+        
         with open(cfg, 'r') as fin:
             cfg_d = pytoml.load(fin)
 
@@ -128,7 +126,6 @@ def run_query(folder, model, q):
         ndcg = 0.0
         num_queries = 0
 
-        #print('Running queries')
         r_l = []
         n_l = []
         with open(query_path) as query_file:
