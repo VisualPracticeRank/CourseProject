@@ -39,7 +39,7 @@ While in the CourseProject folder, cd into VPR, list of the files and folders an
    
    `python3 manage.py migrate`
    
-   `python3 manage.py runserver`
+   `python3 manage.py runserver --run-snycdb`
 
 A browser with the application will pop-up, or you can head to 127.0.0.1:8000
 
