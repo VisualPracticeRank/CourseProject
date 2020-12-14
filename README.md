@@ -30,7 +30,9 @@ Running the Django server
 While in the CourseProject folder, cd into VPR, list of the files and folders and you will see a file called manage.py. Run the following command:
 
    `python3 manage.py makemigrations`
+   
    `python3 manage.py migrate`
+   
    `python3 manage.py runserver`
 
 A browser with the application will pop-up.
