@@ -108,7 +108,7 @@ For the iteration feature, the backend will utilize the qrels.txt and queries.tx
    1. results[0] = list of top k articles
    2. results[1] = list of ndcg
    3. results[2] = list of running avg ndcg
-   4. results[3] = query
+   4. results[3] = list of queries
 
 
 ## Reference
