@@ -20,6 +20,9 @@ https://mediaspace.illinois.edu/media/t/1_3s2zdgys
 
    e.g. `conda activate vpr`
 
+3. Download the repository
+   
+   `wget https://github.com/VisualPracticeRank/CourseProject.git`
 
 3. Install the packages in requirements.txt
 
