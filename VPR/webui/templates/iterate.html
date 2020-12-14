@@ -1,17 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <body>
 
 <div id='Data'></div><br>
+
 <input type="button" onclick="previous()" value="<<">
 <input type="button" onclick="next()" value=">>">
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Score</th>
+      <th scope="col">Size</th>
+      <th scope="col">Unique Terms</th>
+      <th scope="col">Body</th>
+    </tr>
+  </thead>
+  <tbody id='Table'>
+    <tr>
+      <th scope="row">{{obj.rank}}</th>
+      <td>{{obj.score}}</td>
+      <td>{{obj.doc_size}}</td>
+      <td>{{obj.unique_terms}}</td>
+      <td>{{obj.body}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
 
 <script>
 
 var test = {
 "data":[
-  {"firstName":"John", "lastName":"Doe"},
-  {"firstName":"Anna", "lastName":"Smith"},
+  {"topk": [{'body': "lol1", 'score': 0}, {'body': "lol2", 'score': 0}], "query": "test", 'ndcg': 0, 'running_ndcg': 0},
+  {"topk": [{'body': "lol2", 'score': 0}, {'body': "lol2", 'score': 0}], "query": "test", 'ndcg': 0, 'running_ndcg': 0},
 ]
 }
 var i = 0, len;
@@ -21,10 +48,24 @@ loop(i);
 function loop(i) {
   len = test['data'].length
 
-  document.getElementById("Data").innerHTML =
+  var text = '';
+  var z;
+  for (z = 0; z < test['data'][i]['topk'].length; z++) {
+   text += "<tr>" +
+   "<th scope='row'>" + test['data'][i]['topk'][z]['rank'] + "</th>" +
+   "<td>" + test['data'][i]['topk'][z]['score'] + "</td>" +
+   "<td>" + test['data'][i]['topk'][z]['size'] + "</td>" +
+   "<td>" + test['data'][i]['topk'][z]['unique'] + "</td>" +
+   "<td>" + test['data'][i]['topk'][z]['body'] + "</td>" +
+   "</tr>"
+  }
 
-  "FirstName: " + test['data'][i]['firstName'] +
-  "<br>LastName: " + test['data'][i]['lastName'];
+  document.getElementById("Data").innerHTML =
+  "Query: " + test['data'][i]['query'] +
+  "<br>NDCG: " + test['data'][i]['ndcg'] + "<br>";
+
+  document.getElementById("Table").innerHTML = text;
+
 }
 
 function next() {
@@ -44,3 +85,4 @@ function previous() {
 
 </body>
 </html>
+{% endblock content %}
