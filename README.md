@@ -86,12 +86,21 @@ When a model is being uploaded, the model is loaded into `webui_model` with the 
 
 After you can select a dataset, model, and query, you click on Search. Then frontend (in `view.py`) will call the backend (`search_eval.py`) and pass the following variables: `folder` (folder where the dataset is stored), `model`, `query`.
 
+For the iteration feature, the frontend will send these information to the backend: `folder` (path to dataset), `model`. After receiving the response from the backend, the frontend will display the following information: `query` (as specified in the queries.txt), `NDCG`, a table of the following information: the score of the document, size of the document, unique terms in the document, and snippit of the body.
+
 ### Backend
 The backend (`search_eval.py`) will these variables from the frontend: `folder`, `model`, `query`. It will first change its directory to `[folder_to_dataset]/datasets` and build an inverted index.
 
 Then, it will determine if the `model` is one of the defaults ('OkapiBM25', 'PivotedLength', 'AbsoluteDiscount', 'JelinekMercer', 'DirichletPrior'). If it's not, then it will decode the string (using base64) and build the ranker.
 
 Finally, it will run the ranker with the inverted index, query for the top 10 documents and return the top 10 documents, and their score.
+
+For the iteration feature, the backend will utilize the qrels.txt and queries.txt that were uploaded when uploading the dataset. It will return a list of list:
+   1. results[0] = list of top k articles
+   2. results[1] = list of ndcg
+   3. results[2] = list of running avg ndcg
+   4. results[3] = query
+
 
 ## Citation
 1. Chase Geiglem, 2017. [2-search-and-ir-eval.ipynb] (https://github.com/meta-toolkit/metapy/blob/master/tutorials/2-search-and-ir-eval.ipynb).
