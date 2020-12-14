@@ -24,7 +24,7 @@ https://mediaspace.illinois.edu/media/t/1_3s2zdgys
    
    `git clone https://github.com/VisualPracticeRank/CourseProject.git`
 
-3. nstall the packages in requirements.txt
+3. Install the packages in requirements.txt
 
    `cd CourseProject`
    
@@ -32,8 +32,6 @@ https://mediaspace.illinois.edu/media/t/1_3s2zdgys
 
 ### Running the Django server
 While in the CourseProject folder, cd into VPR, list of the files and folders and you will see a file called manage.py. Run the following command:
-
-   `cd VPR`
    
    `python3 manage.py makemigrations`
    
@@ -41,7 +39,7 @@ While in the CourseProject folder, cd into VPR, list of the files and folders an
    
    `python3 manage.py runserver`
 
-A browser with the application will pop-up, or you can head to 127.0.0.1:8000
+A browser with the application will pop-up, or you can head to `127.0.0.1:8000`
 
 If you are running this on a VM, instead of `python3 manage.py runserver`, you can run the following command:
    `python3 manage.py runserver 0.0.0.0:8000`
