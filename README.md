@@ -28,9 +28,16 @@ The goal of this project is to create a visual representation of a supplied rank
 Running the Django server
 While in the CourseProject folder, cd into VPR, list of the files and folders and you will see a file called manage.py. Run the following command:
 
+   `python3 manage.py makemigrations`
+   `python3 manage.py migrate`
    `python3 manage.py runserver`
 
 A browser with the application will pop-up.
+
+If you are running this on a VM, instead of `python3 manage.py runserver`, you can run the following command:
+   `python3 manage.py runserver 0.0.0.0:8000`
+
+Then, head over to `[your ip]:8000`, e.g. `18.219.133.210:8000`
 
 ### Shutting down the Django server
 If you want to shutdown the Django server, you can do `ctrl+c` in the terminal to shut down the server. You can also deactivate the virtual environment with this command: 
