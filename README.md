@@ -111,5 +111,5 @@ For the iteration feature, the backend will utilize the qrels.txt and queries.tx
    4. results[3] = query
 
 
-## Citation
+## Reference
 1. Chase Geiglem, 2017. [2-search-and-ir-eval.ipynb] (https://github.com/meta-toolkit/metapy/blob/master/tutorials/2-search-and-ir-eval.ipynb).
